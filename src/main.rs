@@ -89,8 +89,14 @@ async fn index() -> impl Responder {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
+
+    let port: u16 = env::var("PORT")
+        .unwrap_or_else(|_| "8080".to_string())
+        .parse()
+        .expect("Invalid port number");
+
     HttpServer::new(|| App::new().service(index))
-        .bind(("127.0.0.1", 8080))?
+        .bind(("0.0.0.0", port))?
         .run()
         .await
 }
