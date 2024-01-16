@@ -7,11 +7,12 @@ use serde_json::json;
 use std::env;
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 struct ApiResponse {
-    copyright: String,
+    copyright: Option<String>,
     date: String,
     explanation: String,
-    hdurl: String,
+    hdurl: Option<String>,
     media_type: String,
     service_version: String,
     title: String,
@@ -96,7 +97,7 @@ async fn main() -> std::io::Result<()> {
         .expect("Invalid port number");
 
     HttpServer::new(|| App::new().service(index))
-        .bind(("0.0.0.0", port))?
+        .bind(("127.0.0.1", port))?
         .run()
         .await
 }
