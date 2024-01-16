@@ -96,20 +96,8 @@ async fn main() -> std::io::Result<()> {
         .parse()
         .expect("Invalid port number");
 
-    let host = match env::var("ENVIRONMENT")
-        .unwrap_or_else(|_| "development".to_string())
-        .as_str()
-    {
-        "development" => "127.0.0.1",
-        "production" => "0.0.0.0",
-        _ => {
-            eprintln!("Invalid environment type. Defaulting to 127.0.0.1");
-            "127.0.0.1"
-        }
-    };
-
     HttpServer::new(|| App::new().service(index))
-        .bind((host, port))?
+        .bind(("0.0.0.0", port))?
         .run()
         .await
 }
